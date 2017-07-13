@@ -56,7 +56,7 @@ module FinTS
     end
 
     def build_header
-      length = @segments.map(&:to_s).sum(&:length)
+      length = @segments.map(&:to_s).inject(0) { |sum, segment| sum + segment.length }
       Segment::HNHBK.new(length, @dialog_id, @msg_no)
     end
 
