@@ -150,6 +150,7 @@ module FinTS
           psplit = split_for_data_elements(p)
           next if psplit[0] != '3040'
           td = psplit[3]
+          next if td.nil?
           touchdown[msgseg.class] = Helper.fints_unescape(td)
         end
       end
