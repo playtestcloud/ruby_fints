@@ -23,9 +23,9 @@ module FinTS
         raise ArgumentError, 'Unsupported segment for message summary'
       end
 
-      res = {}
       seg = find_segment(name)
-      raise SegmentNotFoundError, "segment #{name}" if seg.nil?
+      return {} if seg.nil?
+      res = {}
       parts = split_for_data_groups(seg).drop(1)
       parts.each do |de|
         de = split_for_data_elements(de)
