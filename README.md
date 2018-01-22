@@ -15,6 +15,7 @@ Limitations
 Banks tested:
 
 * Sparkasse
+* ING DiBa
 
 Usage
 -----
