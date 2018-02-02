@@ -16,6 +16,7 @@ Banks tested:
 
 * Sparkasse
 * ING DiBa
+* GLS Bank
 
 Usage
 -----
