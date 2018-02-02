@@ -9,7 +9,9 @@ module FinTS
       FinTS::Client.logger.debug("<< #{message_string}")
       data = Base64.encode64(message_string)
 
-      response = Net::HTTP.post(@url, data, {'Content-Type' => 'text/plain'})
+      response = Net::HTTP.start(@url.host, @url.port, use_ssl: @url.scheme == 'https') do |http|
+        http.post(@url.path, data, {'Content-Type' => 'text/plain'})
+      end
       code = response.code.to_i
       if code < 200 || code > 299
         raise ConnectionError, "Bad status code #{code}"
