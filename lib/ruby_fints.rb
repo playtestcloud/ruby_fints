@@ -1,5 +1,5 @@
 require 'base64'
-require 'httparty'
+require 'net/http'
 require 'cmxl'
 require 'logger'
 require_relative 'fints/client'
