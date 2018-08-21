@@ -37,6 +37,12 @@ accounts = f.get_sepa_accounts
 pp accounts
 # [{iban: 'DE12345678901234567890', bic: 'ABCDEFGH1DEF', accountnumber: '123456790', subaccount: '', blz: '123456789'}]
 
+balance = f.get_balance(accounts[0])
+pp balance
+# {:amount=>1234.56,
+#  :currency=>"EUR",
+#  :date=>#<Date: 2018-08-21 ((2458352j,0s,0n),+0s,2299161j)>}
+
 statement = f.get_statement(accounts[0], Date.new(2017, 4, 3), Date.new(2017, 4, 4))
 pp statement.map(&:data)
 
