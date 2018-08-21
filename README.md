@@ -17,6 +17,7 @@ Banks tested:
 * Sparkasse
 * ING DiBa
 * GLS Bank
+* comdirect
 
 Usage
 -----
