@@ -40,6 +40,51 @@ module FinTS
       end
     end
 
+    def get_balance(account)
+      FinTS::Client.logger.info("Start fetching balance")
+
+      dialog = new_dialog
+      dialog.sync
+      dialog.init
+
+      msg = create_balance_message(dialog, account)
+      FinTS::Client.logger.debug("Send message: #{msg}")
+      resp = dialog.send_msg(msg)
+      dialog.send_end
+
+      # find segment and split up to balance part
+      seg = resp.find_segment('HISAL')
+      arr = Helper.split_for_data_elements(Helper.split_for_data_groups(seg)[4])
+
+      amount = arr[1].sub(',', '.').to_f
+      # 'C' for credit, 'D' for debit
+      amount *= -1 if arr[0] == 'D'
+
+      balance = {
+        amount: amount,
+        currency: arr[2],
+        date: Date.parse(arr[3])
+      }
+
+      FinTS::Client.logger.debug("Balance: #{balance}")
+      balance
+    end
+
+    def create_balance_message(dialog, account)
+      hversion = dialog.hksalversion
+
+      acc = if [4, 5, 6].include?(hversion)
+              [account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
+            elsif hversion == 7
+              [account[:iban], account[:bic], account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
+            else
+              raise ArgumentError, "Unsupported HKSAL version #{hversion}"
+            end
+
+      segment = Segment::HKSAL.new(3, hversion, acc)
+      new_message(dialog, [segment])
+    end
+
     def get_statement(account, start_date, end_date)
       FinTS::Client.logger.info("Start fetching from #{start_date} to #{end_date}")
 

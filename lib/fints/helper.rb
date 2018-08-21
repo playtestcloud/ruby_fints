@@ -13,5 +13,13 @@ module FinTS
       mt940 = Cmxl.parse(processed_data)
       mt940.flat_map(&:transactions)
     end
+
+    def self.split_for_data_groups(seg)
+      seg.split(/\+(?<!\?\+)/)
+    end
+
+    def self.split_for_data_elements(deg)
+      deg.split(/:(?<!\?:)/)
+    end
   end
 end
