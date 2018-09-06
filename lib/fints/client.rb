@@ -41,7 +41,7 @@ module FinTS
     end
 
     def get_balance(account)
-      FinTS::Client.logger.info("Start fetching balance")
+      FinTS::Client.logger.info('Start fetching balance')
 
       dialog = new_dialog
       dialog.sync
