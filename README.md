@@ -28,10 +28,10 @@ require 'pp'
 
 FinTS::Client.logger.level = Logger::DEBUG
 f = FinTS::PinTanClient.new(
-    '123456789',  # Your bank's BLZ
+    '123456789', # Your bank's BLZ
     'myusername',
     'mypin',
-    'https://mybank.com/...'  # endpoint, e.g.: https://hbci-pintan.gad.de/cgi-bin/hbciservlet
+    'https://mybank.com/...' # endpoint, e.g.: https://hbci-pintan.gad.de/cgi-bin/hbciservlet
 )
 
 accounts = f.get_sepa_accounts
@@ -44,7 +44,7 @@ pp balance
 #  :currency=>"EUR",
 #  :date=>#<Date: 2018-08-21 ((2458352j,0s,0n),+0s,2299161j)>}
 
-statement = f.get_statement(accounts[0], Date.new(2017, 4, 3), Date.new(2017, 4, 4))
+statement = f.get_statement(accounts[0], Date.new(2018, 4, 3), Date.new(2018, 4, 4))
 pp statement.map(&:data)
 
 # [#<Cmxl::Fields::Transaction:0x007fab6b457ec8
