@@ -88,16 +88,13 @@ module FinTS
       stack = []
       within_financial_instrument = false
       clauses.each do |clause|
-        if clause.start_with?(':16R:FIN')
-          # start of financial instrument
+        if clause.start_with?(':16R:FIN') # start of financial instrument
           within_financial_instrument = true
-        elsif clause.startswith(':16S:FIN')
-          # end of financial instrument - move stack over to
-          # return value
-          retval << stack
-          stack = []
+        elsif clause.startswith(':16S:FIN') # end of financial instrument
+          retval << stack # store stack
+          stack = [] # empty stack for next operation
           within_financial_instrument = false
-        elsif within_financial_instrument
+        elsif within_financial_instrument # everything inbetween
           stack << clause
         end
       end
