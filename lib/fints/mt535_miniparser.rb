@@ -34,21 +34,15 @@ module FinTS
           # date of market price
           # e.g. ':98A::PRIC//20170428'
           m = RE_PRICEDATE.match(clause)
-          if m
-            price_date = Time.strptime(m[1], '%Y%m%d').date()
-          end
+          price_date = Time.strptime(m[1], '%Y%m%d').date if m
           # number of pieces
           # e.g. ':93B::AGGR//UNIT/16,8211'
           m = RE_PIECES.match(clause)
-          if m
-            pieces = (m[1] + '.' + m[2]).to_s
-          end
+          pieces = (m[1] + '.' + m[2]).to_s if m
           # total value of holding
           # e.g. ':19A::HOLD//EUR970,17'
           m = RE_TOTALVALUE.match(clause)
-          if m
-            total_value = (m[2] + '.' + m[3]).to_f
-          end
+          total_value = (m[2] + '.' + m[3]).to_f if m
         end
         # processed all clauses
         retval << {
@@ -61,7 +55,6 @@ module FinTS
           total_value: total_value
         }
       end
-          
       retval
     end
 
@@ -72,7 +65,7 @@ module FinTS
         if line.start_with?(':')
           clauses << prevline if prevline != ''
           prevline = line
-        elsif line.startswith("-")
+        elsif line.startswith('-')
           # last line
           clauses << prevline
           clauses << line
