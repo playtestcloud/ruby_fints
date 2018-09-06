@@ -4,7 +4,7 @@ module FinTS
     attr_accessor :dialog_id
     attr_accessor :encrypted_segments
 
-    def initialize(blz, username, pin, system_id, dialog_id, msg_no, encrypted_segments, tan_mechs=nil)
+    def initialize(blz, username, pin, system_id, dialog_id, msg_no, encrypted_segments, tan_mechs = nil)
       @blz = blz
       @username = username
       @pin = pin
@@ -47,7 +47,7 @@ module FinTS
     end
 
     def build_signature_head
-      @secref = Kernel.rand(1000000..9999999)
+      @secref = Kernel.rand(1_000_000..9_999_999)
       Segment::HNSHK.new(2, @secref, @blz, @username, @system_id, @profile_version, @security_function)
     end
 
