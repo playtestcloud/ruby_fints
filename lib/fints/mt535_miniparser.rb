@@ -61,13 +61,13 @@ module FinTS
           total_value: total_value
         }
       end
-          
+
       retval
     end
 
     def collapse_multilines(lines)
       clauses = []
-      prevline = ''
+      prevline = ""
       lines.each do |line|
         if line.start_with?(':')
           clauses << prevline if prevline != ''
@@ -77,7 +77,7 @@ module FinTS
           clauses << prevline
           clauses << line
         else
-          prevline += "|#{line}"
+          prevline << "|#{line}"
         end
       end
       clauses
