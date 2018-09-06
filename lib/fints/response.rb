@@ -19,7 +19,7 @@ module FinTS
     end
 
     def get_summary_by_segment(name)
-      if !['HIRMS', 'HIRMG'].include?(name)
+      unless %w[HIRMS HIRMG].include?(name)
         raise ArgumentError, 'Unsupported segment for message summary'
       end
 
@@ -36,19 +36,15 @@ module FinTS
 
     def successful?
       summary = get_summary_by_segment('HIRMG')
-      summary.each do |code, msg|
-        if code[0] == '9'
-          return false
-        end
+      summary.each do |code, _msg|
+        return false if code[0] == '9'
       end
-      return true
+      true
     end
 
     def get_dialog_id
       seg = self.find_segment('HNHBK')
-      unless seg
-        raise ArgumentError, 'Invalid response, no HNHBK segment'
-      end
+      raise ArgumentError, 'Invalid response, no HNHBK segment' unless seg
       get_segment_index(4, seg)
     end
 
@@ -88,15 +84,13 @@ module FinTS
         parts = split_for_data_groups(s)
         segheader = split_for_data_elements(parts[0])
         current_version = segheader[2].to_i
-        if current_version > ret
-          ret = current_version
-        end
+        ret = current_version if current_version > ret
       end
       ret
     end
 
     def get_supported_tan_mechanisms
-      segs = self.find_segments('HIRMS')
+      segs = find_segments('HIRMS')
       segs.each do |s|
         seg = split_for_data_groups(s).drop(1)
         seg.each do |segment_data_group|
