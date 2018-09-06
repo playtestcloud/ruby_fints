@@ -72,17 +72,20 @@ module FinTS
 
     def create_balance_message(dialog, account)
       hversion = dialog.hksalversion
-
-      acc = if [4, 5, 6].include?(hversion)
-              [account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
-            elsif hversion == 7
-              [account[:iban], account[:bic], account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
-            else
-              raise ArgumentError, "Unsupported HKSAL version #{hversion}"
-            end
+      acc = format_account_statement_by_version(account, hversion)
 
       segment = Segment::HKSAL.new(3, hversion, acc)
       new_message(dialog, [segment])
+    end
+
+    def format_account_statement_by_version(account, hversion)
+      if [4, 5, 6].include?(hversion)
+        [account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
+      elsif hversion == 7
+        [account[:iban], account[:bic], account[:accountnumber], account[:subaccount], '280', account[:blz]].join(':')
+      else
+        raise ArgumentError, "Unsupported HKSAL version #{hversion}"
+      end
     end
 
     def get_statement(account, start_date, end_date)
