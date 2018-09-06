@@ -5,7 +5,7 @@ module FinTS
 
       def logger
         @logger ||= Logger.new($stdout).tap do |log|
-          log.progname = self.name
+          log.progname = name
         end
       end
     end
@@ -145,7 +145,7 @@ module FinTS
 
     def get_holdings(account)
       # init dialog
-      dialog = self.new_dialog()
+      dialog = new_dialog
       dialog.sync
       dialog.init
 
