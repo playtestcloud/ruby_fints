@@ -43,7 +43,7 @@ module FinTS
     end
 
     def get_dialog_id
-      seg = self.find_segment('HNHBK')
+      seg = find_segment('HNHBK')
       raise ArgumentError, 'Invalid response, no HNHBK segment' unless seg
       get_segment_index(4, seg)
     end
@@ -101,9 +101,9 @@ module FinTS
           end
         end
       end
-      return false
+      false
     end
-    
+
     def unwrap(data)
       match = RE_UNWRAP.match(data)
       match ? match[1] : data
@@ -124,7 +124,7 @@ module FinTS
       end
       found
     end
-    
+
     def find_segment_for_reference(name, ref)
       segs = find_segments(name)
       segs.each do |seg|
