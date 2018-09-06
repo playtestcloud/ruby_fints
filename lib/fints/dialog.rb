@@ -30,10 +30,10 @@ module FinTS
       seg_sync = Segment::HKSYN.new(5)
 
       msg_sync = Message.new(@blz, @username, @pin, @system_id, @dialog_id, @msg_no, [
-        seg_identification,
-        seg_prepare,
-        seg_sync
-      ])
+                               seg_identification,
+                               seg_prepare,
+                               seg_sync
+                             ])
 
       FinTS::Client.logger.debug("Sending SYNC: #{msg_sync}")
       resp = send_msg(msg_sync)
@@ -60,9 +60,9 @@ module FinTS
       seg_prepare = Segment::HKVVB.new(4)
 
       msg_init = Message.new(@blz, @username, @pin, @system_id, @dialog_id, @msg_no, [
-        seg_identification,
-        seg_prepare,
-      ], @tan_mechs)
+                               seg_identification,
+                               seg_prepare
+                             ], @tan_mechs)
       FinTS::Client.logger.debug("Sending INIT: #{msg_init}")
       resp = send_msg(msg_init)
       FinTS::Client.logger.debug("Got INIT response: #{resp}")
@@ -79,9 +79,9 @@ module FinTS
       msg.dialog_id = @dialog_id
 
       resp = Response.new(@connection.send_msg(msg))
-      if !resp.successful?
-        raise DialogError, resp.get_summary_by_segment('HIRMG')
-      end
+
+      raise DialogError, resp.get_summary_by_segment('HIRMG') unless resp.successful?
+
       @msg_no += 1
       resp
     end
@@ -90,8 +90,8 @@ module FinTS
       FinTS::Client.logger.info('Initialize END')
 
       msg_end = Message.new(@blz, @username, @pin, @system_id, @dialog_id, @msg_no, [
-        Segment::HKEND.new(3, @dialog_id)
-      ])
+                              Segment::HKEND.new(3, @dialog_id)
+                            ])
       FinTS::Client.logger.debug("Sending END: #{msg_end}")
       resp = send_msg(msg_end)
       FinTS::Client.logger.debug("Got END response: #{resp}")
