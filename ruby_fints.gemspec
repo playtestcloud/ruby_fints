@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Basic FinTS 3.0 implementation in Ruby}
   s.description = %q{FinTS (formerly known as HBCI) is a protocol to programmatically interface with German banks. This gem is a translation of https://github.com/raphaelm/python-fints into Ruby.}
 
-  s.add_runtime_dependency 'cmxl', '~> 0.2'
+  s.add_runtime_dependency 'cmxl'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'webmock'
